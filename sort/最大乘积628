@@ -1,0 +1,44 @@
+LeetCode #628
+求三个数的最大乘积
+这是一个简单问题，很显然如果全部是正数的话，直接排序，然后最大的3个乘积就是结果。但是数组的取值有正有负，所以还有一种可能的情况是，两个绝对值最大的负数（实际最小），乘以最大的正数。
+当然并不代表如果数组有正有负的话，最大乘积就是这种情况，我们也不需要判断数组中是否有负数。因为最大值的情况只有上面两种，所以只需调用一次排序，再求出上面两种情况，取最大。
+代码如下
+
+class Solution {
+public:
+    int maximumProduct(vector<int>& nums) {
+        shellsort(nums);
+        int n=nums.size();
+       int res1=nums[n-1]*nums[n-2]*nums[n-3];
+       int res2=nums[0]*nums[1]*nums[n-1];
+      int res= max(res1,res2);
+      return res;
+
+
+    }
+    void shellsort(vector<int>& nums)
+    {
+        int i,j, gap=nums.size();
+        int tmp;
+        do{
+            gap=gap/3+1;
+            for(int i=gap;i<nums.size();i++)
+            {
+                if(nums[i]<nums[i-gap]){
+                    tmp=nums[i];
+                    j=i-gap;
+                    do{
+                        nums[j+gap]=nums[j];
+                        j=j-gap;
+
+
+                    }while(j>=0&&tmp<nums[j]);
+                    nums[j+gap]=tmp;
+
+                }
+            }
+
+        }while(gap>1);
+    }
+    
+};
